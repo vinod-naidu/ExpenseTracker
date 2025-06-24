@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="./Tracker.css">
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1DKg1ERo0BZlK"
+        crossorigin="anonymous"></script>
+    <div class="header">
+        <p class="m-0" id="para">Expense<br>Tracker <img src="./spending.png" alt="" width="30px" height="30px"></p>
+    </div>
+    <div class="input-form">
+        <div class="form-floating">
+            <input type="date" class="form-control dateinput" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Date</label>
+        </div>
+        <div class="form-floating">
+            <select class="form-select transactiontype" aria-label="Default select example">
+                <option selected value="tranasactionType">Transactiontype</option>
+                <option value="Income">Income</option>
+                <option value="Expense">Expense</option>
+
+            </select>
+        </div>
+        <div class="form-floating ">
+            <input type="text" class="form-control amountinput" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Amount</label>
+        </div>
+        <button class="btn" id="add-button" onclick="addRow()">+</button>
+    </div>
+    <div class="cards">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><span>Total Income</span><img src="incomemoney.png" width="30px"
+                        height="30px">
+                </h5>
+                <h6 class="card-subtitle"><img src="currencyrupee.png.png" width="30px" height="30px" class="img"><span
+                        class="money" id="income">0</span></h6>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><span>Total Expense</span><img src="expenditure.png" width="30px"
+                        height="30px">
+                </h5>
+                <h6 class="card-subtitle"><img src="currencyrupee.png.png" width="30px" height="30px" class="img"><span
+                        class="money" id="expense">0</span></h6>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><span>Balance</span><img src="accountbal.png.png" width="30px"
+                        height="30px">
+                </h5>
+                <h6 class="card-subtitle"><img src="currencyrupee.png.png" width="30px" height="30px"><span
+                        class="money" id="balance">0</span></h6>
+            </div>
+        </div>
+    </div>
+    <table class="transaction-table" id="table">
+        <tr id="transaction-row">
+            <th>Amount</th>
+            <th>Transaction Type</th>
+            <th>Transaction Date</th>
+            <th>action</th>
+        </tr>
+
+
+    </table>
+   <script>
+    let table = document.getElementById('table');
+
+    function deleteRow(row) {
+        row.remove();
+        // You can update totals here if needed
+    }
+
+    function addRow() {
+        const date = document.querySelector('.dateinput').value;
+        const transaction = document.querySelector('.transactiontype').value;
+        const amount = document.querySelector('.amountinput').value.trim();
+
+        if (date === "" || transaction === "transactionType" || amount === "" || isNaN(amount)) {
+            alert("Please fill in all fields correctly.");
+            return; // Stop further execution
+        }
+
+        // Create table row
+        const row = document.createElement('tr');
+
+        const amountCell = document.createElement('td');
+        amountCell.innerText = amount;
+
+        const transactionCell = document.createElement('td');
+        transactionCell.innerText = transaction;
+
+        const dateCell = document.createElement('td');
+        dateCell.innerText = date;
+
+        const binCell = document.createElement('td');
+        const deleteButton = document.createElement('button');
+        const binImage = document.createElement('img');
+        binImage.src = "delete.png";
+        binImage.style.width = "25px";
+        binImage.style.height = "25px";
+        deleteButton.appendChild(binImage);
+        deleteButton.classList.add('deletesymbol');
+        deleteButton.onclick = () => deleteRow(row);
+        binCell.appendChild(deleteButton);
+
+        row.appendChild(amountCell);
+        row.appendChild(transactionCell);
+        row.appendChild(dateCell);
+        row.appendChild(binCell);
+        table.appendChild(row);
+
+        // Update Totals
+        let totalIncome = parseInt(document.getElementById('income').innerText);
+        let totalExpense = parseInt(document.getElementById('expense').innerText);
+        let balance = parseInt(document.getElementById('balance').innerText);
+
+        const amt = parseInt(amount);
+
+        if (transaction === 'Income') {
+            totalIncome += amt;
+            balance += amt;
+        } else if (transaction === 'Expense') {
+            totalExpense += amt;
+            balance -= amt;
+        }
+
+        document.getElementById('income').innerText = totalIncome;
+        document.getElementById('expense').innerText = totalExpense;
+        document.getElementById('balance').innerText = balance;
+
+        // Clear inputs after add
+        document.querySelector('.dateinput').value = "";
+        document.querySelector('.transactiontype').value = "transactionType";
+        document.querySelector('.amountinput').value = "";
+    }
+</script>
+
+</body>
+
+</html>
