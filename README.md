@@ -37,4 +37,18 @@ Add local storage or backend for data persistence
 Include charts or graphs for visual insights
 
 Add category-based filtering
+## 🌐 Live Demo
+
+🚀 Check out the live version of the Expense Tracker here:  
+👉 [https://your-site-name.netlify.app](https://vinodexpensetracker.netlify.app/)
+
+Every time I push changes to this GitHub repository, Netlify automatically rebuilds and redeploys the latest version of the project.
+
+---
+
+### 🧩 Deployment Details
+
+- **Hosting**: [Netlify](https://www.netlify.com/)
+- **Source Code**: [GitHub Repository](https://github.com/Vinod Dasari/ExpenseTracker)
+- **CI/CD**: Auto-deployment configured via GitHub → Netlify integration
 
